@@ -70,4 +70,56 @@ router.post("/test-post-4", function(req, res) {
     res.send(  { msg: arr , status: true }  )
 })
 
+
+let players=[{
+    "name": "manish",
+    "dob": "1/1/1995",
+    "gender": "male",
+    "city": "jalandhar",
+    "sports": [
+    "swimming"
+    ]
+    },
+    {
+     "name": "gopal",
+        "dob": "1/09/1995",
+        "gender": "male",
+        "city": "delhi",
+        "sports": [
+        "socker"
+        ]    
+    },
+{
+    "name": "lokesh",
+    "dob": "1/1/1990",
+    "gender": "male",
+    "city": "mumbai",
+    "sports": [
+        "soccer"
+    ]
+},
+]
+    router.post('/players', function (req, res) {
+let newPlayerPost=req.body
+let newplayerName=newPlayerPost.name
+isNameRepeatedInPost=false//set flag bydafalut value which is false
+        for(i=0;i<players.length;i++){
+            if(players[i].name==newplayerName){
+            isNameRepeatedInPost=true//set flag true if above condition true
+            break;//if not condition true break the loop
+            }
+        }
+            if(isNameRepeatedInPost){
+      res.send("this player name is already exit")
+            }
+            else{
+                players.push(newplayerName)
+                res.send(players)
+            }
+        
+        res.send(  { data: players , status: true }  )
+    })
+   
+ 
+    
 module.exports = router;
