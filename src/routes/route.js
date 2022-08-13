@@ -119,7 +119,56 @@ isNameRepeatedInPost=false//set flag bydafalut value which is false
         
         res.send(  { data: players , status: true }  )
     })
+
+    router.post("/wikipedia/queryPrarams",function(req,res){
+let countryValue=req.query
+res.send({countryValue,status:true})
+
+})
+router.get("/queryPrarams-2",function(req,res){
+ let marks=req.query.marks
+    let result=marks>40?"pass":"fail"
+    res.send({data:result,status:true})
+    })
    
- 
-    
+ let person=[
+    {
+    name:"Pk",
+    age:10,
+    votingstatus:false
+ },
+ {
+    name:"Sk",
+    age:20,
+    votingstatus:false
+ },
+ {
+    name:"AA",
+    age:70,
+    votingstatus:false
+ },
+ {
+    name:"SC",
+    age:5,
+    votingstatus:false
+ },
+ {
+    name:"HO",
+    age:40,
+    votingstatus:false
+ },
+]
+router.post("/votingsystem",function(req,res){
+    let votingAge=req.query.age
+    let eligibleForVote=[]
+for(i=0;i<person.length;i++)  
+{
+    if(person[i].age>votingAge){
+person[i].votingstatus=true
+eligibleForVote.push(person[i])
+    }
+}  
+res.send({person:eligibleForVote,status:true})
+
+})
 module.exports = router;
