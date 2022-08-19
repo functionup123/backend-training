@@ -1,22 +1,23 @@
 const { count } = require("console")
 const BookModel= require("../models/bookModel")
 
-const createBook= async function (req, res) {
-    let data= req.body
+// const createBook= async function (req, res) {
+//     let data= req.body
 
-    let savedData= await BookModel.create(data)
-    res.send({msg: savedData})
-}
+//     let savedData= await BookModel.create(data)
+//     res.send({msg: savedData})
+// }
 
-const getBooksData= async function (req, res) {
-    let allBooks= await BookModel.find( {authorName : "HO" } )
-    console.log(allBooks)
-    if (allBooks.length > 0 )  res.send({msg: allBooks, condition: true})
-    else res.send({msg: "No books found" , condition: false})
-}
+// const getBooksData= async function (req, res) {
+//     let allBooks= await BookModel.find( {authorName : "HO" } )
+//     console.log(allBooks)
+//     if (allBooks.length > 0 )  res.send({msg: allBooks, condition: true})
+//     else res.send({msg: "No books found" , condition: false})
+// }
 
 
-const updateBooks= async function (req, res) {
+
+const autorsData= async function (req, res) {
     let data = req.body // {sales: "1200"}
     // let allBooks= await BookModel.updateMany( 
     //     { author: "SK"} , //condition
@@ -52,8 +53,9 @@ const deleteBooks= async function (req, res) {
 // DELETE
 
 
+//module.exports.createBook= createBook
+//module.exports.getBooksData= getBooksData
+//module.exports.updateBooks= updateBooks
+//module.exports.deleteBooks= deleteBooks
 
-module.exports.createBook= createBook
-module.exports.getBooksData= getBooksData
-module.exports.updateBooks= updateBooks
-module.exports.deleteBooks= deleteBooks
+
