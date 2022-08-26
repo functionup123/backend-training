@@ -33,9 +33,11 @@ const getBooksWithAuthorAndPublisherDetails = async function (req, res) {
 }
 const getupdateBooks=async function(req,res){
     let publisherName=await publisherModel.find({name:{$in:['Penguin','HarperCollins']}})
-    let update=await bookModel.updateMany({Publisher:publisherName},{$set:{isHardCover:true}})
+    .select("_id")
+    let update=await bookModel.updateMany({publisher_id:publisherName},
+        {$set:{isHardCover:true}})
     let authorRating=await authorModel.find({rating:{$gt:3.5}}).select("_id")
-    let updatePrice=await bookModel.updateMany({author1:authorRating},{$inc:{price:10}})
+    let updatePrice=await bookModel.updateMany({author_id:authorRating},{$inc:{price:10}})
     res.send({update,updatePrice})   
 }
 
