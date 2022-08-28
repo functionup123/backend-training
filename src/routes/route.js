@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 // const UserModel= require("../models/userModel.js")
-const UserController= require("../controllers/userController")
-const BookController= require("../controllers/bookController")
+//const UserController= require("../controllers/userController")
+//const BookController= require("../controllers/bookController")
 const commonMW = require ("../middlewares/commonMiddlewares")
 const newUserController=require("../controllers/newUserController")
 const productController=require("../controllers/productController")
@@ -14,12 +14,12 @@ router.get("/test-me", function (req, res) {
 
 
 
-router.post("/createBook", BookController.createBook  )
+//router.post("/createBook", BookController.createBook  )
 
 
 
 
-router.post("/createUser", UserController.createUser)
+//router.post("/createUser", UserController.createUser)
 // router.get("/getUsersData", UserController.getUsersData)
 
 
@@ -50,7 +50,7 @@ router.post("/createUser", UserController.createUser)
 
 
 
-router.get("/basicRoute", commonMW.mid1, commonMW.mid2, commonMW.mid3, commonMW.mid4, UserController.basicCode)
+//router.get("/basicRoute", commonMW.mid1, commonMW.mid2, commonMW.mid3, commonMW.mid4, UserController.basicCode)
 
 
 
@@ -59,7 +59,7 @@ router.get("/basicRoute", commonMW.mid1, commonMW.mid2, commonMW.mid3, commonMW.
 // router.get("/basicRoute4", commonMW.mid1, commonMW.mid4, UserController.basicCode4)
 router.post("/createNewUser",commonMW.headerValidation,newUserController.createNewUser)
 router.post("/createproduct",productController.createproduct)
-router.post("/createOrder",orderController.createOrder)
+router.post("/createOrder",commonMW.headerValidation,orderController.createOrder)
 
 
 module.exports = router;

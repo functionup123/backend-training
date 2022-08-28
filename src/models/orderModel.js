@@ -3,11 +3,11 @@ const ObjectId = mongoose.Schema.Types.ObjectId
 const orderSchema = new mongoose.Schema({
 	userId: {
 		type: ObjectId,
-		ref: newUser
+		ref: "newUser"
 	},
 	productId: {
 		type: ObjectId,
-		ref: product
+		ref: "product"
 	},
 	amount: Number,
 	isFreeAppUser: Boolean,
