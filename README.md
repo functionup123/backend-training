@@ -47,5 +47,13 @@ If present, check that the token is valid.
 - Once, all the apis are working fine, move the authentication related code in a middleware called auth.js
 - Add this middleware at route level in the routes where applicable.
 
+- For this assignment you have to create a new branch - **assignment/auth-3**
+- Your user document should look like this
+```
+2nd assisgnment
++ Please note that you have to also write the logic for authorisation now so that a logged in user can modify or fetch ONLY their own data.
++ You have to implement authorisation for fetch user details, update user and delete user apis
++ Run this code and ensure the authorisation works fine for all the apis before following the next requirement
++ You now have to move this similar code in all the three apis in a suitable middleware
 
-
+``` 
