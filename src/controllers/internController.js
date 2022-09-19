@@ -11,7 +11,7 @@ const isValid = function (value) {
 const createIntern = async function (req, res) {
     try {
         let data = req.body
-        console.log(data)
+        //console.log(data)
         let { name, email, mobile, collegeName } = data
         if (Object.keys(data).length === 0){
          return res.status(400).send({ status: false, message: "pls enter the data in body" })
@@ -49,7 +49,7 @@ const createIntern = async function (req, res) {
         if (!(/^[6-9]\d{9}$/).test(mobile)) {
             return res.status(400).send({ status: false, message: "mobileno should be in 0-9" });
         }
-        findCollege = await collegeModel.findOne({ name: collegeName, isDeleted: false })
+      let findCollege = await collegeModel.findOne({ name: collegeName, isDeleted: false })
         if (!findCollege) return res.status(404).send({ status: false, message: "Entered college is Not present in DB" })
         data.collegeId = (findCollege._id).toString()
 
