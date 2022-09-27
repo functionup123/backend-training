@@ -81,8 +81,8 @@ const getBooksByParams = async function (req, res) {
         subcategory:subcategory,
         isDeleted:isDeleted,
         releasedAt:releasedAt,
-        reviews:reviews,
-         allReviews: review.length ? review : { message: "0 review for this Book." }
+    
+         reviews: review.length ? review : { message: "0 review for this Book." }
       }
       return res.status(200).send({ status: true,message: "success", data: data })
 

@@ -23,9 +23,9 @@ route.get('/books',auth. authentication,bookController.getBooks)
 
 route.get('/books/:bookId',auth.authentication, bookController.getBooksByParams)
 
-route.put("/books/:bookId",auth. authentication,auth.authorisation, bookValiation.ubv, bookController.updateBook);
+route.put("/books/:bookId",auth. authentication, bookValiation.ubv, bookController.updateBook);
 
-route.delete('/books/:bookId', auth.authentication ,auth.authorisation, bookController.deleteBook)
+route.delete('/books/:bookId', auth.authentication , bookController.deleteBook)
 
 //--------------------->review api   <-------------------------
 

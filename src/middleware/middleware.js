@@ -41,8 +41,8 @@ let authorisation =async function (req, res, next) {
         if (!checkBookId) {
           return res.status(404).send({status: false, message: "Book not Found"})
       }
-      let reqUser=checkBookId.userId
-        if ( reqUser != authorLoggedIn) {
+      
+        if ( checkBookId.userId != authorLoggedIn) {
           return res.status(403).send({status: false,msg: "loggedin author not allowed to modify changes"});
         }
         next();

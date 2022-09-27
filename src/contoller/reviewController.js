@@ -15,7 +15,7 @@ const createReview = async function (req, res) {
         }
         let findBookId = await bookModel.findById(reqBookId)
         if (!findBookId) {
-            return res.status(400).send({ status: false, message: "this Book Id is not present in db" })
+            return res.status(404).send({ status: false, message: "this Book Id is not present in db" })
         }
         let data = req.body
         if (Object.keys(data).length == 0) {
@@ -90,11 +90,11 @@ const deleteReviwsById = async function (req, res) {
 
         let book = await bookModel.findById(bookId)
         if ( book.isDeleted == true) {    //
-            return res.status(400).send({ status: false, message: "Book is already deleted." })
+            return res.status(404).send({ status: false, message: "Book is already deleted." })
         }
         let review = await reviewModel.findById(reviewId)
         if ( review.isDeleted == true) {  //
-            return res.status(400).send({ status: false, message: "Review already deleted" })
+            return res.status(404).send({ status: false, message: "Review already deleted" })
         }
         if (review.bookId != bookId) {
             return res.status(404).send({ status: false, message: "Review not found for this book" })
