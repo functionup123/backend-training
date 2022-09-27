@@ -1,7 +1,7 @@
 const reviewModel = require('../models/reviewModel')
 const bookModel = require('../models/booksModel')
 const mongoose = require('mongoose')
-const moment=require('moment')
+
 
 //-----------> createReview ------------>//
 const createReview = async function (req, res) {
@@ -21,24 +21,19 @@ const createReview = async function (req, res) {
         if (Object.keys(data).length == 0) {
             return res.status(400).send({ status: false, message: "body is empty" })
         }
-        let { bookId, reviewedBy, reviewedAt, rating, review } = data
+        let { bookId, rating } = data
         if (reqBookId != bookId) { return res.status(400).send({ status: false, message: "please use the same id in path and inside the body!" }) }
         if (findBookId.isDeleted == true) { return res.status(400).send({ status: false, message: "you can't set review for this book this is deleted" }) }
 
         if (!bookId) { return res.status(400).send({ status: false, message: "bookId is mandatory" }) }
-        //if (!reviewedBy) { return res.status(400).send({ status: false, message: "reviewedBy is mandatory" }) }
-//if(reviewedBy==undefined || reviewedBy==null || reviewedBy==""){
-//reviewedBy.$set('Guest')
-//}
-
-      //  if (!reviewedAt) { return res.status(400).send({ status: false, message: "reviewedAt is mandatory" }) }
+      
         if (!rating) { return res.status(400).send({ status: false, message: "rating is mandatory" }) }
         if (!/^[1-5]\d{0}$/.test(rating)) { return res.status(400).send({ status: false, message: "rating in number only(1-5)" }) }
 
         const updatedBooks = await bookModel.findOneAndUpdate({ _id: bookId, isDeleted: false }, { $inc: { reviews: 1 } }, { new: true })
 
        let createdReview = await reviewModel.create(data)
-        let updatedBooksdata = { updatedBooks }
+        let updatedBooksdata = { data:updatedBooks, review:createdReview }
 
         updatedBooksdata.reviewsData = createReview
         return res.status(201).send({ status: true, message: 'Success', data: updatedBooksdata })
@@ -50,45 +45,32 @@ const createReview = async function (req, res) {
 }
 
 //-----------> updateReviewById ------------>//
-const updateBooksById = async function (req, res) {
-  try {
-  
-      let bookId = req.params.bookId
-      let { title, excerpt, releasedAt, ISBN } = req.body
+const updatereviewbookbybookid = async function (req, res) {
 
-      if (Object.keys(req.body).length == 0) {
-          return res.status(400).send({ status: false, message: "Please enter the data in the request body to update" })
-      }
-       
-      
-      let uniqueTitle = await bookModel.findOne({ title: title })
-      if (uniqueTitle) {
-          return res.status(400).send({ status: false, message: "title already exists" })
-      }
-      let uniqueISBN = await bookModel.findOne({ ISBN: ISBN })
-      if (uniqueISBN) {
-          return res.status(400).send({ status: false, message: "ISBN already exists" })
-      }
+    try {
+        let bookId = req.params.bookId
+        let reviewId = req.params.reviewId
+        if (!mongoose.Types.ObjectId.isValid(bookId)) return res.status(400).send({ status: false, msg: "Bookid is not valid" })
+        if (!mongoose.Types.ObjectId.isValid(reviewId)) return res.status(400).send({ status: false, msg: "reviewid is not valid" })
 
-      if (!moment(releasedAt).format('YYYY-MM-DD')) {
-          return res.status(400).send({ status: false, message: "please enter date format like this: YYYY-MM-DD" }) 
-      }
+        let { review, rating, reviewedBy } = req.body
 
-      let updatedData = await bookModel.findOneAndUpdate(
-          { _id: bookId, isDeleted: false },
-          {
-              title: title,
-              excerpt: excerpt,
-              releasedAt: releasedAt,
-              ISBN: ISBN,
-          },
-          { new: true }
-      )
+        let bookData = await bookModel.findOne({ _id: bookId, isDeleted: false })
+        if (!bookData) return res.status(404).send({ status: false, msg: "Book might be deleted or its not present" })
 
-      return res.status(200).send({ status: true, message: "Data updated successfully", data: updatedData })
-  } catch (err) {
-      return res.status(500).send({ status: false, message: err.message })
-  }
+        let findreviewandupdate = await reviewModel.findOneAndUpdate({ _id: reviewId, bookId: bookId, isDeleted: false }, { reviewedBy: reviewedBy, rating: rating, review: review }, { new: true }).select({ createdAt: 0, updatedAt: 0, _id: 0 })
+        if (!findreviewandupdate) return res.status(404).send({ status: false, msg: "Document not found it must be deleted or incorrect" })
+
+        let finalData = {
+            title: bookData.title, excerpt: bookData.excerpt, userId: bookData.userId,
+            category: bookData.category, subcategory: bookData.subcategory, isDeleted: false, reviews: bookData.reviews,
+            reviewsData: findreviewandupdate
+        }
+        res.status(200).send({ status: true, message: "Data updated Successfully", Data: finalData })
+    } catch (error) {
+        res.status(500).send({ status: false, message: error.message })
+
+    }
 }
 //-----------> deleteReviewById ------------>//
 const deleteReviwsById = async function (req, res) {
@@ -132,5 +114,5 @@ const deleteReviwsById = async function (req, res) {
 
 
 module.exports = {
-    createReview, deleteReviwsById,updateBooksById
+    createReview, deleteReviwsById,updatereviewbookbybookid
 }

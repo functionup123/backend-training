@@ -31,7 +31,7 @@ route.delete('/books/:bookId', auth.authentication ,auth.authorisation, bookCont
 
 route.post('/books/:bookId/review', review.createReview)
 
-route.put('/books/:bookId/review/:reviewId', review.createReview)
+route.put('/books/:bookId/review/:reviewId', review.updatereviewbookbybookid)
 
 route.delete('/books/:bookId/review/:reviewId',review.deleteReviwsById)
 

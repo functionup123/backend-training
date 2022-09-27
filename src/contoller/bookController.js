@@ -1,7 +1,7 @@
 const bookModel=require('../models/booksModel')
 const reviewModel=require('../models/reviewModel')
 const mongoose = require('mongoose')
-
+const moment=require('moment')
 
 //-----------------> createBook ------------------>
 const createBook=async function(req,res){
@@ -95,47 +95,41 @@ const getBooksByParams = async function (req, res) {
 
 const updateBook=async function (req,res){
   try{
-    let bookId=req.params.bookId;
-    if (!bookId)
-    {
-        return res
-       .status(400)
-       .send({status:false,message:"Book id is required"});
+    let bookId = req.params.bookId
+    let { title, excerpt, releasedAt, ISBN } = req.body
+
+    if (Object.keys(req.body).length == 0) {
+        return res.status(400).send({ status: false, message: "Please enter the data in the request body to update" })
     }
-    let requestBody=req.body;
-    let {title,excerpt,releasedAt,ISBN}=requestBody;
-
-    let findTitle = await bookModel.findOne({ title: title });
-    if (findTitle) {
-        return res
-            .status(400)
-            .send({ status: false, message: "Title should be unique" });
+     
+    
+    let uniqueTitle = await bookModel.findOne({ title: title })
+    if (uniqueTitle) {
+        return res.status(400).send({ status: false, message: "title already exists" })
     }
-            let findISBN = await bookModel.findOne({ ISBN: ISBN });
-            if (findISBN) {
-               return  res
-                    .status(400)
-                    .send({ status: false, message: "ISBN should be unique" });
-            }
+    let uniqueISBN = await bookModel.findOne({ ISBN: ISBN })
+    if (uniqueISBN) {
+        return res.status(400).send({ status: false, message: "ISBN already exists" })
+    }
 
-  let bookUpdated = await bookModel.findOneAndUpdate(
-    { _id: bookId },
-    {
-      $set: {
-        title: title,
-        excerpt:excerpt,
-        releasedAt:releasedAt,
-        ISBN:ISBN,
-      },
-    }, 
-    { new: true }
-  );
+    if (!moment(releasedAt).format('YYYY-MM-DD')) {
+        return res.status(400).send({ status: false, message: "please enter date format like this: YYYY-MM-DD" }) 
+    }
+    let alert = await bookModel.findOne({ _id: bookId, isDeleted: true });
+    if (alert) return res.status(404).send({ msg: "Book is already deleted" });
 
-  return res.status(200).send({
-    status: true,
-    message: "Book Data Updated Successfully",
-    data: bookUpdated,
-  });
+    let updatedData = await bookModel.findOneAndUpdate(
+        { _id: bookId, isDeleted: false },
+        {
+            title: title,
+            excerpt: excerpt,
+            releasedAt: releasedAt,
+            ISBN: ISBN,
+        },
+        { new: true }
+    )
+
+    return res.status(200).send({ status: true, message: "Data updated successfully", data: updatedData })
   } catch (error) {
     return res.status(500).send({ status: false, message: error.message });
   }
