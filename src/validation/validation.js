@@ -32,6 +32,8 @@ const isValidObjectId = (objectId) => {
     return mongoose.Types.ObjectId.isValid(objectId)
   };
   
+  const isValidPassword = (value)=>{
+    return (/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%&])[a-zA-Z0-9@#$%&]{8,16}$/)
+}
 
-
-module.exports= {isValidRequestBody, ValidPhone, ValidEmail, ValidName,isValid,isValidObjectId}
+module.exports= {isValidRequestBody, ValidPhone,isValidPassword, ValidEmail, ValidName,isValid,isValidObjectId}

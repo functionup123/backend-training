@@ -4,11 +4,8 @@ const userController = require("../controller/userController");
 
 
 router.post("/register", userController.createUser)
-
-//router.get('/user/:userId/profile', authentication, authorization, getUserDetails)
-
-
-
+router.post("/login", userController.loginUser)
+router.get("/user/:userId/profile", userController.getUser)
 
 router.all("/*", function (req, res) {
   res.status(400).send("Invalid request....!!!");
