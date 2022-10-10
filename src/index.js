@@ -2,14 +2,14 @@ const express = require("express");
 const route = require("./route/route.js");
 const mongoose = require("mongoose");
 const app = express();
-
-
+const multer=require("multer")
+app.use(multer().any())
 
 app.use(express.json());
 
 mongoose
   .connect(
-    "mongodb+srv://komal:MoWEjgQO5fVymmFq@cluster0.2kvjrvq.mongodb.net/group64",
+    "mongodb+srv://subhadip:subhadip@cluster0.wn8fb9g.mongodb.net/project5?retryWrites=true&w=majority",
     {
       useNewUrlParser: true,
     }

@@ -8,29 +8,29 @@ const userSchema = new mongoose.Schema(
 
     email: { type: String, require: true, unique: true },
 
-    //profileImage: { type: String, require: true }, // s3 link
+    profileImage: { type: String, require: true }, // s3 link
 
     phone: { type: String, require: true, unique: true },
 
-    //password: { type: String, require: true }, // encrypted password
+    password: { type: String, require: true }, // encrypted password
 
-    // address: {
-    //   shipping: {
-    //     street: { type: String, require: true },
+    address: {
+      shipping: {
+        street: { type: String, require: true },
 
-    //     city: { type: String, require: true },
+        city: { type: String, require: true },
 
-    //     pincode: { type: Number, require: true },
-    //   },
+        pincode: { type: Number, require: true },
+      },
 
-    //   billing: {
-    //     street: { type: String, require: true },
+      billing: {
+        street: { type: String, require: true },
 
-    //     city: { type: String, require: true },
+        city: { type: String, require: true },
 
-    //     pincode: { type: Number, require: true },
-    //   },
-    // },
+        pincode: { type: Number, require: true },
+      },
+    },
   },
   { timestamps: true }
 );
