@@ -1,5 +1,5 @@
 const { validate } = require("../models/userModel")
-
+const mongoose=require("mongoose") 
 const isValidRequestBody = function(value){
     return Object.keys(value).length>0
 }
@@ -21,7 +21,13 @@ const ValidPhone=(name)=>{
 }
 
 
-
+const isValidString = (String) => {
+    if (/\d/.test(String)) {
+      return false
+    } else {
+      return true
+    }
+  }
 const isValid = (value) => {
     if (typeof value === "undefined" || value === null) return false
     if (typeof value === "string" && value.trim().length === 0) return false
@@ -36,4 +42,4 @@ const isValidObjectId = (objectId) => {
     return (/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%&])[a-zA-Z0-9@#$%&]{8,16}$/)
 }
 
-module.exports= {isValidRequestBody, ValidPhone,isValidPassword, ValidEmail, ValidName,isValid,isValidObjectId}
+module.exports= {isValidRequestBody,isValidString,ValidPhone,isValidPassword, ValidEmail, ValidName,isValid,isValidObjectId}
