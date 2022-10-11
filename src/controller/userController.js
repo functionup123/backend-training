@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken")
 const { uploadFile } = require("../util/aws")
 
 const mongoose = require("mongoose")
-const { isValidRequestBody, ValidName, isValidPassword, isValidString, ValidEmail, ValidPhone, isValid, isValidObjectId } = require("../validation/validation")
+const { isValidRequestBody, ValidName, value, isValidPassword, isValidString, ValidEmail, ValidPhone, isValid, isValidObjectId } = require("../validation/validation")
 
 const createUser = async function (req, res) {
     try {
@@ -149,15 +149,18 @@ if(address.shipping.pincode){
    // if(!isValidString(address.shipping.))return res.send({status:false,msg:"bhoom awswss"})
 }
 
-// if(address.billing.city){
-//     if(!isValid(address.billing.city)) return res.send({status:false,msg:"bhoom billing"})
-//     if(!isValidString(address.billing.city))return res.send({status:false,msg:"bhoom bfvdcnxmz"})
-// }
-
-if(address.billing.street){
-    if(!isValid(address.billing.street)) return res.send({status:false,msg:"bhoom street "})
-    if(!isValidString(address.billing.street))return res.send({status:false,msg:"bhoom  street"})
+if(address.billing.city){
+   // if(!isValid(address.billing.city)) return res.send({status:false,msg:"bhoom billing"})
+    //if(!isValidString(address.billing.city))return res.send({status:false,msg:"bhoom bfvdcnxmz"})
+    //if((address.billing.street).toString().trim().length==0) return res.send({status:false,msg:"chetan"})
+    if((address.billing.street) === "") return res.send({status:false,msg:"bhoom bfvdcnxmz"})
 }
+
+// if(address.billing.street){
+//    // if(!isValid(address.billing.street)) return res.send({status:false,msg:"bhoom street "})
+//     if(!isValidString(address.billing.street))return res.send({status:false,msg:"bhoom  street"})
+//     if(address.billing.street.trim().length===0)return res.send({status:false,msg:"kya haal chal "})
+// }
 
 
 if(address.billing.pincode){
