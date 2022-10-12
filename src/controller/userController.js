@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken")
 const { uploadFile } = require("../util/aws")
 
 const mongoose = require("mongoose")
-const { isValidRequestBody, isValid2,ValidName,isValidPassword, isValidString, ValidEmail, ValidPhone, isValid, isValidObjectId } = require("../validation/validation")
+const { isValidRequestBody,ValidName,isValidPassword, isValidString, ValidEmail, ValidPhone, isValid, isValidObjectId } = require("../validation/validation")
 
 const createUser = async function (req, res) {
     try {
@@ -106,7 +106,7 @@ const updateUserDetails = async function (req, res) {
         const files = req.files
         const updateData = req.body
 
-        const { address, fname, lname, email, phone, password } = updateData
+        const { address, fname, lname, email, phone, password,profileImage } = updateData
 
         if (!isValidObjectId(userId)) return res.status(400).send({ status: false, msg: "invalid user Id" })
         let findUserId = await userModel.findById({ _id: userId })
@@ -145,7 +145,7 @@ const updateUserDetails = async function (req, res) {
             if (address.shipping) {
                 const { street, city, pincode } = address.shipping
                 if (street) {
-                    if (!isValid2(street))return res.status(400).send({ status: false, msg: "shipping street is not valid " })
+                    if (!isValid(street))return res.status(400).send({ status: false, msg: "shipping street is not valid " })
                 findAddress.address.shipping.street = street
                 }
                 if (city) {

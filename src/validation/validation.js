@@ -46,12 +46,24 @@ const isValid = (value) => {
     if (typeof value === "string" && value.trim().length === 0) return false
     return true
 }
-const isValid2 = (value) => {
-  if (typeof value === undefined || value === null ) return false
-  if (typeof value === "string" && value.trim().length === 0) return false
-  if(typeof value === Number) return false
+
+const isValid1 = (value) => {
+  if (typeof value == 'undefined' || value == null) return false
+  if (typeof value == 'string' && value.trim().length == 0) return false
+  if (typeof value == 'number' && value.toString().trim().length == 0) return false
   return true
 }
+
+const isValidPrice = function (price) {
+  if (/^\d+(?:\.\d{1,4})?$/.test(price)) {
+    return true
+  } else {
+    return false
+  }
+}
+
+
+
 
 
 
@@ -63,4 +75,4 @@ const isValidObjectId = (objectId) => {
     return (/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%&])[a-zA-Z0-9@#$%&]{8,16}$/)
 }
 
-module.exports= {isValidRequestBody,isValid2,value,isValidBody,isValidString,ValidPhone,isValidPassword, ValidEmail, ValidName,isValid,isValidObjectId}
+module.exports= {isValidRequestBody,isValidPrice,isValid1,value,isValidBody,isValidString,ValidPhone,isValidPassword, ValidEmail, ValidName,isValid,isValidObjectId}
