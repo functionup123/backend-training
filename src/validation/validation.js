@@ -28,16 +28,32 @@ const isValidString = (String) => {
       return true
     }
   }
+  const isValidBody = (object) => {
+    if (Object.keys(object).length > 0) {
+      return true
+    } else {
+      return false;
+    }
+  };
+
   const value = (value) => {
     if(typeof value === "string" && value.trim().length===0) return false
       return true
     
   }
 const isValid = (value) => {
-    if (typeof value === "undefined" || value === null) return false
+    if ( value === undefined || value === null ) return false
     if (typeof value === "string" && value.trim().length === 0) return false
     return true
 }
+const isValid2 = (value) => {
+  if (typeof value === undefined || value === null ) return false
+  if (typeof value === "string" && value.trim().length === 0) return false
+  if(typeof value === Number) return false
+  return true
+}
+
+
 
 const isValidObjectId = (objectId) => {
     return mongoose.Types.ObjectId.isValid(objectId)
@@ -47,4 +63,4 @@ const isValidObjectId = (objectId) => {
     return (/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%&])[a-zA-Z0-9@#$%&]{8,16}$/)
 }
 
-module.exports= {isValidRequestBody,value, isValidString,ValidPhone,isValidPassword, ValidEmail, ValidName,isValid,isValidObjectId}
+module.exports= {isValidRequestBody,isValid2,value,isValidBody,isValidString,ValidPhone,isValidPassword, ValidEmail, ValidName,isValid,isValidObjectId}

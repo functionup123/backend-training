@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken")
 const { uploadFile } = require("../util/aws")
 
 const mongoose = require("mongoose")
-const { isValidRequestBody, ValidName, value, isValidPassword, isValidString, ValidEmail, ValidPhone, isValid, isValidObjectId } = require("../validation/validation")
+const { isValidRequestBody, isValid2,ValidName,isValidPassword, isValidString, ValidEmail, ValidPhone, isValid, isValidObjectId } = require("../validation/validation")
 
 const createUser = async function (req, res) {
     try {
@@ -71,7 +71,7 @@ const loginUser = async function (req, res) {
 
         let token = jwt.sign({
             userId: userLogin._id
-        }, "e-website@project5", { expiresIn: '24h' }
+        },"e-website@project5", { expiresIn: '24h' }
         )
        res.setHeader("Authorization",token)
         return res.send({ status: true, message: "User loged in successfully", data: token })
@@ -98,6 +98,7 @@ const getUser = async function (req, res) {
     }
 }
 
+//***************************************************************************************************** */
 
 const updateUserDetails = async function (req, res) {
     try {
@@ -136,40 +137,43 @@ const updateUserDetails = async function (req, res) {
             if (!isValidPassword(password)) return res.status(400).send({ status: false, message: "password not valid..password length should be min 8 max 15 charavters " })
             updateData.password = await bcrypt.hash(password, 10)
         }
-// if(address.shipping.city){
-//     if(!isValid(address.shipping.city)) return res.send({status:false,msg:"bhoom"})
-//     if(!isValidString(address.shipping.city))return res.send({status:false,msg:"bhoom awswss"})
-// }
-if(address.shipping.street){
-    if(!isValid(address.shipping.street)) return res.send({status:false,msg:"street"})
-    if(!isValidString(address.shipping.street))return res.send({status:false,msg:"bhoom street"})
-}
-if(address.shipping.pincode){
-    if(!isValid(address.shipping.pincode)) return res.send({status:false,msg:"bhoom pincode"})
-   // if(!isValidString(address.shipping.))return res.send({status:false,msg:"bhoom awswss"})
-}
+        if (address) {
+          
 
-if(address.billing.city){
-   // if(!isValid(address.billing.city)) return res.send({status:false,msg:"bhoom billing"})
-    //if(!isValidString(address.billing.city))return res.send({status:false,msg:"bhoom bfvdcnxmz"})
-    //if((address.billing.street).toString().trim().length==0) return res.send({status:false,msg:"chetan"})
-    if((address.billing.street) === "") return res.send({status:false,msg:"bhoom bfvdcnxmz"})
-}
+            const findAddress = await userModel.findOne({ _id: userId })
 
-// if(address.billing.street){
-//    // if(!isValid(address.billing.street)) return res.send({status:false,msg:"bhoom street "})
-//     if(!isValidString(address.billing.street))return res.send({status:false,msg:"bhoom  street"})
-//     if(address.billing.street.trim().length===0)return res.send({status:false,msg:"kya haal chal "})
-// }
-
-
-
-
-if(address.billing.pincode){
-    if(!isValid(address.billing.pincode)) return res.send({status:false,msg:"bhoom billing"})
-   // if(!isValidString(address.billing.city))return res.send({status:false,msg:"bhoom bfvdcnxmz"})
-}
-
+            if (address.shipping) {
+                const { street, city, pincode } = address.shipping
+                if (street) {
+                    if (!isValid2(street))return res.status(400).send({ status: false, msg: "shipping street is not valid " })
+                findAddress.address.shipping.street = street
+                }
+                if (city) {
+                    if (!isValid(city)) return res.status(400).send({ status: false, msg: "shipping city is not valid " })
+                    findAddress.address.shipping.city = city
+                }
+                if (pincode) {
+                    if (!isValid(pincode)) return res.status(400).send({ status: false, msg: "shipping pincode is not valid " })
+                    findAddress.address.shipping.pincode = pincode
+                }
+            }
+            if (address.billing) {
+                const { street, city, pincode } = address.billing
+                if (street) {
+                    if (!isValid(street)) return res.status(400).send({ status: false, msg: "billing street is not valid " })
+                    findAddress.address.billing.street = street
+                }
+                if (city) {
+                    if (!isValid(city)) return res.status(400).send({ status: false, msg: "billing city is not valid " })
+                    findAddress.address.billing.city = city
+                }
+                if (pincode) {
+                    if (!isValid(pincode)) return res.status(400).send({ status: false, msg: "billing pincode is not valid " })
+                    findAddress.address.billing.pincode = pincode
+                }
+            }
+            updateData.address = findAddress.address
+        }
         const updateDetails = await userModel.findByIdAndUpdate({ _id: userId }, updateData, { new: true },)
         return res.status(200).send({ status: true, message: "User profile updated successfully", data: updateDetails })
     }
