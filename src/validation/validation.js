@@ -50,7 +50,7 @@ const isValid = (value) => {
 const isValid1 = (value) => {
   if (typeof value == 'undefined' || value == null) return false
   if (typeof value == 'string' && value.trim().length == 0) return false
-  if (typeof value == 'number' && value.toString().trim().length == 0) return false
+  if (typeof value == Number && value.toString().trim().length == 0) return false
   return true
 }
 
@@ -64,15 +64,41 @@ const isValidPrice = function (price) {
 
 
 
+const isValidSize = (Size) => {
+  let correctSize = ["S", "XS", "M", "X", "L", "XXL", "XL"]
+  return (correctSize.includes(Size))
+}
 
 
 
+
+// const validPincode=(value)=>{
+// return (/^[1-9]\d{6}$/).test(value)
+// }
+
+const validPincode = function (price) {
+  if (/^[1-9][0-9]{5}$/.test(price)) {
+    return true
+  } else {
+    return false
+  }
+}
 const isValidObjectId = (objectId) => {
     return mongoose.Types.ObjectId.isValid(objectId)
   };
   
+  //     const validipic= (url)=> {
+  //   return (/[^\\s]+(\\.(?i)(jpe?g|png|gif|bmp))$/).test(url)
+  // }
+
+  const validipic = function(profileImage){
+    return /([/|.|\w|\s|-])*\.(?:jpg|gif|png|jpeg)/.test(profileImage)}
+
+
+
+
   const isValidPassword = (value)=>{
     return (/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%&])[a-zA-Z0-9@#$%&]{8,16}$/)
 }
 
-module.exports= {isValidRequestBody,isValidPrice,isValid1,value,isValidBody,isValidString,ValidPhone,isValidPassword, ValidEmail, ValidName,isValid,isValidObjectId}
+module.exports= {isValidRequestBody,validipic,isValidSize,isValidPrice,isValid1,validPincode,value,isValidBody,isValidString,ValidPhone,isValidPassword, ValidEmail, ValidName,isValid,isValidObjectId}
