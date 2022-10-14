@@ -62,16 +62,23 @@ const isValidPrice = function (price) {
   }
 }
 
-
+const validBoolean=(value)=>{
+  return value === Boolean
+}
 
 const isValidSize = (Size) => {
   let correctSize = ["S", "XS", "M", "X", "L", "XXL", "XL"]
   return (correctSize.includes(Size))
 }
 
+const  validFormat=(value)=>{
+  return value.toUpperCase()
+}
 
 
-
+const isValid2 = (value) => {
+  if (typeof value !== undefined || value  !== null) return false
+}
 // const validPincode=(value)=>{
 // return (/^[1-9]\d{6}$/).test(value)
 // }
@@ -101,4 +108,4 @@ const isValidObjectId = (objectId) => {
     return (/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%&])[a-zA-Z0-9@#$%&]{8,16}$/)
 }
 
-module.exports= {isValidRequestBody,validipic,isValidSize,isValidPrice,isValid1,validPincode,value,isValidBody,isValidString,ValidPhone,isValidPassword, ValidEmail, ValidName,isValid,isValidObjectId}
+module.exports= {isValidRequestBody,validBoolean,isValid2,validFormat,validipic,isValidSize,isValidPrice,isValid1,validPincode,value,isValidBody,isValidString,ValidPhone,isValidPassword, ValidEmail, ValidName,isValid,isValidObjectId}
