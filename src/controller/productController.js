@@ -3,7 +3,7 @@ const productModel = require("../models/productModel")
 const { uploadFile } = require("../util/aws")
 
 const mongoose = require("mongoose")
-const { isValidBody,validBoolean, isValid1,isValidSize,validFormat,isValid2, isValidPrice, isValidObjectId, isValidString } = require("../validation/validation")
+const { isValidBody,validBoolean, isValid1,isValidSize,validFormat,isValid2, validipic,isValidPrice, isValidObjectId, isValidString } = require("../validation/validation")
 
 const createProduct = async function (req, res) {
     try {
@@ -48,18 +48,16 @@ const createProduct = async function (req, res) {
 //---------------------------------------------------isFreeShipping---------------------------------------------------//
 //return res.status(400).send({ status: false, message: "isFreeShipping in valid" })
 
-if(isValid2(isFreeShipping)) {return res.status(400).send({ status: false, message: "isFreeShipping in valid" })
-}
-else {
-
-  if(isFreeShipping){
-    if(isFreeShipping=="true" || isFreeShipping== "false"||isFreeShipping=== Boolean){
-
-    }
-    else return res.status(400).send({ status: false, message: "isFreeShipping in valid" })
+if(isFreeShipping != null){
+   
     
-  }}
-  
+    if(!(isFreeShipping=="true" || isFreeShipping== "false"||isFreeShipping=== Boolean)){
+        return res.status(400).send({ status: false, message: "isFreeShipping in valid" })
+    
+    }
+
+    
+}
 
 
 
@@ -166,19 +164,20 @@ const getProductsById = async function (req, res) {
 const updateProductDetails = async function (req, res) {
     try {
         const productId = req.params.productId
-        const image = req.files
+        const files = req.files
         const updateData = req.body
-
         let { title, description, price, style, availableSizes, installments,isFreeShipping } = updateData
-
         if (!isValidObjectId(productId)) return res.status(400).send({ status: false, msg: "invalid product Id" })
 
         let findProductId = await productModel.findById({ _id: productId, isDeleted: false })
         if (!findProductId) return res.status(404).send({ status: false, msg: "Product not found" })
         if ((Object.keys(updateData).length == 0)) return res.status(400).send({ status: false, msg: "please provide data for update" })
- if (!(files && files.length > 0)) return res.status(400).send({ status: false, message: "product image is mandatory" })
-        let imageUrl = await uploadFile(files[0])
-        requestBody.productImage = imageUrl
+if (files && files.length > 0) {
+    let image = await uploadFile(files[0])
+    updateData.profileImage = image
+    if(!validipic(updateData.profileImage))return res.status(400).send({ status: false, message: "profileImage is not valid " })
+}
+        
 //---------------------------------title-validations-------------------------------------------------------//
 if (typeof title != "undefined") {
     if (!isValid1(title)) return res.status(400).send({ status: false, message: "title Should be Valid" })
@@ -203,50 +202,34 @@ if (style != undefined) {
 }
    //-------------------------------------------isFreeShipping-----------------------------------------------//
 
-   if (isFreeShipping != undefined) {
-  
-    if (!((isFreeShipping === "true") || (isFreeShipping === "false"))) {
-        return res.status(400).send({ status: false, message: 'isFreeShipping should be a boolean value' })
-    }
+   if(isFreeShipping != null){ 
+    if(!(isFreeShipping=="true" || isFreeShipping== "false"||isFreeShipping=== Boolean)){
+        return res.status(400).send({ status: false, message: "isFreeShipping in valid" }) 
+    } 
+}
+//------------------installment-------------------------------------------------//
+if(installments!=undefined) {
+if (!(/^-?(0|[1-9]\d*)$/).test(installments)) return res.status(400).send({ status: false, message: "installments contant only number" })
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //------------------------------------availableSizes--------------------------------------------//
 
+if (availableSizes) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+let size=availableSizes.toUpperCase()
+console.log(size);
+availableSizes=size 
+    if(!isValidSize(availableSizes)){
+        return res.status(400).send({status:false,msg:"not a valid size"})
+    }
+availableSizes={$slice:size}
+req.body["availableSizes"] = size
+console.log(availableSizes)
+}
+const updateDetails = await productModel.findByIdAndUpdate({ _id: productId, isDeleted: false }, updateData, { new: true }).select({__v:0})
+return res.status(200).send({ status: true, message: "User profile updated successfully", data: updateDetails })
     }
     catch (err) {
         return res.status(500).send({ status: false, error: err.message })

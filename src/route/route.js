@@ -16,7 +16,7 @@ router.get('/products/:productId',productController.getProductsById)
 router.delete('/products/:productId',productController.deleteProduct)
 router.get('/products', productController.getProduct)
 
-
+router.put('/products/:productId',productController.updateProductDetails);
 
 router.all("/*", function (req, res) {
   res.status(400).send("Invalid request....!!!");
