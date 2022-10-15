@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken")
 const { uploadFile } = require("../util/aws")
 
 const mongoose = require("mongoose")
-const { isValidRequestBody, ValidName,validipic,validBoolean, isValidPassword, validPincode, isValidString, ValidEmail, ValidPhone, isValid, isValidObjectId } = require("../validation/validation")
+const { isValidRequestBody, ValidName,validipic, isValidPassword, validPincode, isValidString, ValidEmail, ValidPhone, isValid, isValidObjectId } = require("../validation/validation")
 
 const createUser = async function (req, res) {
     try {
@@ -146,9 +146,6 @@ const updateUserDetails = async function (req, res) {
         if(req.body.profileImage && !validipic(req.body.profileImage)){
           return res.status(400).send({ status: false, msg: "image forrmat is not valid" })
         }
-
-
-    
             if(address && address.shipping){
            if(address.shipping.street !== undefined  && !isValid(address.shipping.street)) return res.send({status:false,msg:"street"})
             if(!isValidString(address.shipping.street))return res.send({status:false,msg:"bhoom street"})
