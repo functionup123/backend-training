@@ -75,6 +75,19 @@ const  validFormat=(value)=>{
   return value.toUpperCase()
 }
 
+    
+
+
+
+const validSize5=function(arrayOfSize){
+  // arrayOfSize =JSON.parse(arrayOfSize)
+   const standardSizes=["S", "XS", "M", "X", "L", "XXL", "XL"]
+   for(let i=0;i<arrayOfSize.length;i++){
+   if(!standardSizes.includes(arrayOfSize[i]))  return false
+   }
+   return true
+}
+
 
 const isValid2 = (value) => {
   if (typeof value !== undefined || value  !== null) return false
@@ -108,4 +121,4 @@ const isValidObjectId = (objectId) => {
     return (/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%&])[a-zA-Z0-9@#$%&]{8,16}$/)
 }
 
-module.exports= {isValidRequestBody,validBoolean,isValid2,validFormat,validipic,isValidSize,isValidPrice,isValid1,validPincode,value,isValidBody,isValidString,ValidPhone,isValidPassword, ValidEmail, ValidName,isValid,isValidObjectId}
+module.exports= {isValidRequestBody,validSize5,validBoolean,isValid2,validFormat,validipic,isValidSize,isValidPrice,isValid1,validPincode,value,isValidBody,isValidString,ValidPhone,isValidPassword, ValidEmail, ValidName,isValid,isValidObjectId}

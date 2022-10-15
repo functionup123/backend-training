@@ -3,7 +3,7 @@ const productModel = require("../models/productModel")
 const { uploadFile } = require("../util/aws")
 
 const mongoose = require("mongoose")
-const { isValidBody,validBoolean, isValid1,isValidSize,validFormat,isValid2, validipic,isValidPrice, isValidObjectId, isValidString } = require("../validation/validation")
+const { isValidBody,validBoolean, isValid1,isValidSize,validFormat,isValid2,validSize5, validipic,isValidPrice, isValidObjectId, isValidString } = require("../validation/validation")
 
 const createProduct = async function (req, res) {
     try {
@@ -49,33 +49,20 @@ const createProduct = async function (req, res) {
 //return res.status(400).send({ status: false, message: "isFreeShipping in valid" })
 
 if(isFreeShipping != null){
-   
     
     if(!(isFreeShipping=="true" || isFreeShipping== "false"||isFreeShipping=== Boolean)){
         return res.status(400).send({ status: false, message: "isFreeShipping in valid" })
-    
-    }
-
-    
+     }
 }
-
-
-
-        //------------------------------------------installments-----------------------------//
+   //------------------------------------------installments-----------------------------//
         if (!installments) return res.status(400).send({ status: false, message: "installments is mandatory" })
         if (!(/^-?(0|[1-9]\d*)$/).test(installments)) return res.status(400).send({ status: false, message: "installments contant only number" })
-
-
         if (!(files && files.length > 0)) return res.status(400).send({ status: false, message: "product image is mandatory" })
-
-
         let imageUrl = await uploadFile(files[0])
         requestBody.productImage = imageUrl
 
         let productCreated = await productModel.create(requestBody)
         return res.status(201).send({ status: true, message: "product created successfully", data: productCreated })
-
-
     } catch (err) {
         return res.status(500).send({ status: false, error: err.message })
     }
@@ -91,14 +78,15 @@ const getProduct= async function(req,res){
         let filter={isDeleted:false}
         if(Object.keys(data).length>0){
       
-        if(size){
-            newsize=validFormat(size)
-            filter.size=newsize
-            if(!isValidSize(newsize)) return res.send(newsize)
-        }
-     }
-
-
+            if (size) {
+                size = JSON.parse(size)
+                if (!validSize5(size)) {
+                    return res.status(400).send({ status: false, message: "The size can be only S, XS,M, X, L, XXL" })
+                }
+                filter["availableSizes"]=size
+     }else 
+     return res.status(200).send({ status: true, message: 'Plese give some data for filter'})
+     
       if(priceGreaterThan && priceLessThan){
         filter.price={$gt:priceGreaterThan, $lt:priceLessThan}
       }
@@ -109,16 +97,19 @@ const getProduct= async function(req,res){
         filter.price={$lt:priceLessThan}
       }
          
-    
+        }
       const findProduct= await productModel.find(filter).sort({price:priceSort})
-      if(!findProduct) return res.status(400).send({message:"product not found"})
-    
+      if(!findProduct || findProduct.length<=0){ return res.status(400).send({message:"product not found"})}
+      else {
+      return res.status(200).send({ status: true, message: 'Product found successfully', data: findProduct })
+      }
     } 
     catch(error){
      return res.status(500).send({status:false,error:error.message})
     }
      }
     
+// size && name  not done 
 
 
 
@@ -215,9 +206,6 @@ if (!(/^-?(0|[1-9]\d*)$/).test(installments)) return res.status(400).send({ stat
 //------------------------------------availableSizes--------------------------------------------//
 
 if (availableSizes) {
-
-
-
 let size=availableSizes.toUpperCase()
 console.log(size);
 availableSizes=size 
