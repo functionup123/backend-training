@@ -4,7 +4,12 @@ const isValidRequestBody = function(value){
     return Object.keys(value).length>0
 }
 
+const profileM=(value)=>{
+ if( value === null ){
+  return false
+ }
 
+}
 
 
    const ValidName=(name)=>{
@@ -112,13 +117,18 @@ const isValidObjectId = (objectId) => {
   // }
 
   const validipic = function(profileImage){
-    return /([/|.|\w|\s|-])*\.(?:jpg|gif|png|jpeg)/.test(profileImage)}
+    
+    const reg = /image\/png|image\/jpeg|image\/jpg/;
+    return reg.test(profileImage)
+
+  }
 
 
+  
 
+//   const isValidPassword = (value)=>{
+//     return (/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%&])[a-zA-Z0-9@#$%&]{8,15}$/)
+// }
+const isValidPassword = (/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,15}$/)
 
-  const isValidPassword = (value)=>{
-    return (/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%&])[a-zA-Z0-9@#$%&]{8,16}$/)
-}
-
-module.exports= {isValidRequestBody,validSize5,validBoolean,isValid2,validFormat,validipic,isValidSize,isValidPrice,isValid1,validPincode,value,isValidBody,isValidString,ValidPhone,isValidPassword, ValidEmail, ValidName,isValid,isValidObjectId}
+module.exports= {isValidRequestBody,profileM,validSize5,validBoolean,isValid2,validFormat,validipic,isValidSize,isValidPrice,isValid1,validPincode,value,isValidBody,isValidString,ValidPhone,isValidPassword, ValidEmail, ValidName,isValid,isValidObjectId}

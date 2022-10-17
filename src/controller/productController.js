@@ -45,8 +45,11 @@ const createProduct = async function (req, res) {
         if (!availableSizes) return res.status(400).send({ status: false, message: "availableSizes is mandatory" })
         if (availableSizes !== "S" && availableSizes !== "XS" && availableSizes !== "M" && availableSizes !== "X" && availableSizes !== "L" && availableSizes !== "XXL" && availableSizes !== "XL") { return res.status(400).send({ status: false, message: "AvailableSizes should be among ['S','XS','M','X','L','XXL','XL']" }); }
 
+
+      //  if(!validipic(requestBody.productImage))return res.status(400).send({ status: false, message: "profileImage is not valid " })
+
         //---------------------------------------------------isFreeShipping---------------------------------------------------//
-        //return res.status(400).send({ status: false, message: "isFreeShipping in valid" })
+        
 
         if (isFreeShipping != null) {
 
@@ -59,8 +62,9 @@ const createProduct = async function (req, res) {
         if (!(/^-?(0|[1-9]\d*)$/).test(installments)) return res.status(400).send({ status: false, message: "installments contant only number" })
         if (!(files && files.length > 0)) return res.status(400).send({ status: false, message: "product image is mandatory" })
         let imageUrl = await uploadFile(files[0])
+       // if(!validipic(requestBody.productImage))return res.status(400).send({ status: false, message: "profileImage is not valid " })
         requestBody.productImage = imageUrl
-
+        
         let productCreated = await productModel.create(requestBody)
         return res.status(201).send({ status: true, message: "product created successfully", data: productCreated })
     } catch (err) {
@@ -77,18 +81,6 @@ const getProduct = async function (req, res) {
 
         let filter = { isDeleted: false }
         if (Object.keys(data).length > 0) {
-
-            // if (size != undefined) {
-            //    // size = JSON.parse(size)
-            //     if (!validSize5(size)) {
-            //         return res.status(400).send({ status: false, message: "The size can be only S, XS,M, X, L, XXL" })
-            //     }
-            //     filter["availableSizes"] = size
-            // } 
-
-
-            //-------------
-
             if (data.size != null) {
                 if (size.length > 0) {
                     size = size.toUpperCase()
@@ -132,20 +124,6 @@ const getProduct = async function (req, res) {
 }
 
 // size && name  not done 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

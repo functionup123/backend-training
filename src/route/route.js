@@ -3,6 +3,7 @@ const router = express.Router();
 const userController = require("../controller/userController");
 const { authentication,authorization } = require("../middlewar/auth");
 const productController=require("../controller/productController")
+const cartController=require("../controller/cartController")
 //-------------------------userApi------------------------//
 router.post("/register", userController.createUser)
 router.post("/login", userController.loginUser)
@@ -17,6 +18,8 @@ router.delete('/products/:productId',productController.deleteProduct)
 router.get('/products', productController.getProduct)
 
 router.put('/products/:productId',productController.updateProductDetails);
+//-----------------------------------cart-------------------------------------------//
+router.post('/users/:userId/cart',cartController.createCart)
 
 router.all("/*", function (req, res) {
   res.status(400).send("Invalid request....!!!");
