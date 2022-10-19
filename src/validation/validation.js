@@ -51,6 +51,10 @@ const isValid = (value) => {
     if (typeof value === "string" && value.trim().length === 0) return false
     return true
 }
+const isValidNum = (Num) => {
+  let correctNum = [0,1]
+  return (correctNum.includes(Num))
+}
 
 const isValid1 = (value) => {
   if (typeof value == 'undefined' || value == null) return false
@@ -131,4 +135,4 @@ const isValidObjectId = (objectId) => {
 // }
 const isValidPassword = (/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,15}$/)
 
-module.exports= {isValidRequestBody,profileM,validSize5,validBoolean,isValid2,validFormat,validipic,isValidSize,isValidPrice,isValid1,validPincode,value,isValidBody,isValidString,ValidPhone,isValidPassword, ValidEmail, ValidName,isValid,isValidObjectId}
+module.exports= {isValidRequestBody,isValidNum,profileM,validSize5,validBoolean,isValid2,validFormat,validipic,isValidSize,isValidPrice,isValid1,validPincode,value,isValidBody,isValidString,ValidPhone,isValidPassword, ValidEmail, ValidName,isValid,isValidObjectId}

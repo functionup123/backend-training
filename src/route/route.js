@@ -20,6 +20,10 @@ router.get('/products', productController.getProduct)
 router.put('/products/:productId',productController.updateProductDetails);
 //-----------------------------------cart-------------------------------------------//
 router.post('/users/:userId/cart',cartController.createCart)
+router.put('/users/:userId/cart', cartController.updateCart)
+
+router.delete('/users/:userId/cart',cartController.deleteCart)
+
 
 router.all("/*", function (req, res) {
   res.status(400).send("Invalid request....!!!");
