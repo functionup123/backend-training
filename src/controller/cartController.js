@@ -112,16 +112,15 @@ if(removeProduct==0){
 }
 
  if(removeProduct==1){
-   if(quantity>1){let reducedProduct=await cartModel.findOneAndUpdate({"items.productid":productId,userId:userId},$)
-   }
+   if(quantity>1){let reducedProduct=await cartModel.findOneAndUpdate({"items.productId":productId,userId:userId},{$inc:{"items.quantity":-1,totalPrice:-reducePrice}},{new:true})
+   return res.status(200).send({status:true,msg:" product removed successfully",data:reducedProduct})
 }
 
-
-
-
-
-
-
+  else{
+    const deleteProduct= await cartModel.findOneAndUpdate({"items.productId":productId,userId:userId},{$pull:{items:{productId:productId},$inc:{totalItems:-1,totalprice:-reducePrice*quantity}}},{new:true})
+    return res.status(200).send({status:true,msg:" product deleted successfully",data:deleteProduct})
+ }
+    }
     }
     catch (err) {
         return res.status(500).send({ status: false, error: err.message })
