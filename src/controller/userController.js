@@ -150,20 +150,20 @@ const updateUserDetails = async function (req, res) {
         //  if(req.body.profileImage == null) return res.status(400).send({ status: false, msg: "image forrmat isvsvs not valid" })
         if (address && address.shipping) {
             if (address.shipping.street !== undefined && !isValid(address.shipping.street)) return res.status(400).send({ status: false, msg: "street is required" })
-            if (!isValidString(address.shipping.street)) return res.status(400).send({ status: false, msg: "bhoom street" })
-            if (address.shipping.city !== undefined && !isValid(address.shipping.city)) return res.status(400).send({ status: false, msg: "city" })
-            if (!isValidString(address.shipping.city)) return res.status(400).send({ status: false, msg: "bhoom city" })
-            if (address.shipping.pincode !== undefined && !isValid(address.shipping.pincode)) return res.status(400).send({ status: false, msg: "pincode" })
-            if (!isValidString(address.shipping.pincode)) return res.status(400).send({ status: false, msg: "bhoom  pincode" })
+            if (!isValidString(address.shipping.street)) return res.status(400).send({ status: false, msg: "give street in string format " })
+            if (address.shipping.city !== undefined && !isValid(address.shipping.city)) return res.status(400).send({ status: false, msg: "city is required" })
+            if (!isValidString(address.shipping.city)) return res.status(400).send({ status: false, msg: "city in string format" })
+            if (address.shipping.pincode !== undefined && !isValid(address.shipping.pincode)) return res.status(400).send({ status: false, msg: "pincode is required" })
+            if (!isValidString(address.shipping.pincode)) return res.status(400).send({ status: false, msg: " pincode in string format" })
         }
 
         if (address && address.billing) {
-            if (address.billing.street !== undefined && !isValid(address.billing.street)) return res.status(400).send({ status: false, msg: " billing treet" })
-            if (!isValidString(address.billing.street)) return res.status(400).send({ status: false, msg: "bhoom  billing street" })
+            if (address.billing.street !== undefined && !isValid(address.billing.street)) return res.status(400).send({ status: false, msg: "billing is required" })
+            if (!isValidString(address.billing.street)) return res.status(400).send({ status: false, msg: "street in string format only" })
             if (address.billing.city !== undefined && !isValid(address.billing.city)) return res.status(400).send({ status: false, msg: "billing city" })
-            if (!isValidString(address.billing.city)) return res.status(400).send({ status: false, msg: "bhoom city" })
+            if (!isValidString(address.billing.city)) return res.status(400).send({ status: false, msg: "city in string format only" })
             if (address.billing.pincode !== undefined && !isValid(address.billing.pincode)) return res.status(400).send({ status: false, msg: "pincode billing" })
-            if (!isValidString(address.billing.pincode)) return res.status(400).send({ status: false, msg: "bhoom billing pincode" })
+            if (!isValidString(address.billing.pincode)) return res.status(400).send({ status: false, msg: "pincode in string format only" })
         }
 
         const updateDetails = await userModel.findByIdAndUpdate({ _id: userId }, updateData, { new: true },)

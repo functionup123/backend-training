@@ -97,6 +97,20 @@ const validSize5=function(arrayOfSize){
    return true
 }
 
+// const validStatus=function(value){
+//   const newStatus= ["pending", "completed", "cancelled"]
+//   for( let i=0;i<value.length;i++){
+//     if(!newStatus.includes(value[i])) return false
+
+//   }
+//   return true
+// }
+const isValidStatus = (status) => {
+  let correctStatus = ['pending', 'completed', 'cancled']
+  return (correctStatus.includes(status))
+}
+
+
 
 const isValid2 = (value) => {
   if (typeof value !== undefined || value  !== null) return false
@@ -135,4 +149,4 @@ const isValidObjectId = (objectId) => {
 // }
 const isValidPassword = (/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,15}$/)
 
-module.exports= {isValidRequestBody,isValidNum,profileM,validSize5,validBoolean,isValid2,validFormat,validipic,isValidSize,isValidPrice,isValid1,validPincode,value,isValidBody,isValidString,ValidPhone,isValidPassword, ValidEmail, ValidName,isValid,isValidObjectId}
+module.exports= {isValidRequestBody,isValidStatus,isValidNum,profileM,validSize5,validBoolean,isValid2,validFormat,validipic,isValidSize,isValidPrice,isValid1,validPincode,value,isValidBody,isValidString,ValidPhone,isValidPassword, ValidEmail, ValidName,isValid,isValidObjectId}

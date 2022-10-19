@@ -39,7 +39,7 @@ const createCart = async function (req, res) {
                 let updatedCart = await cartModel.findOneAndUpdate({ "items.productId":productId, userId: userId }, { $inc: { "items": 1, totalPrice: productPrice } }, { new: true })
                 return res.status(200).send({ status: true, message: "items added successfully", data: updatedCart })
             }
-            ///// chetan manocha 18lakh 
+            
            
         
         else{

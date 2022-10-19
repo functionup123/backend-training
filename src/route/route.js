@@ -4,6 +4,7 @@ const userController = require("../controller/userController");
 const { authentication,authorization } = require("../middlewar/auth");
 const productController=require("../controller/productController")
 const cartController=require("../controller/cartController")
+const orderController=require('../controller/orderController')
 //-------------------------userApi------------------------//
 router.post("/register", userController.createUser)
 router.post("/login", userController.loginUser)
@@ -23,6 +24,11 @@ router.post('/users/:userId/cart',cartController.createCart)
 router.put('/users/:userId/cart', cartController.updateCart)
 
 router.delete('/users/:userId/cart',cartController.deleteCart)
+
+//------------------------- order api ----------------------------//
+router.post('/users/:userId/orders',orderController.createOrder)
+
+router.put('/users/:userId/orders',orderController.updateOrder)
 
 
 router.all("/*", function (req, res) {
