@@ -68,7 +68,7 @@ const loginUser = async function (req, res) {
 
         if (!isValid(password)) return res.status(400).send({ status: false, message: "password is required" })
 
-        let userLogin = await userModel.findOne({ email })
+        let userLogin = await userModel.findOne({ email:email })
         if (!userLogin) return res.status(404).send({ status: false, message: "Not found" })
         let checkPassword = await bcrypt.compare(password, userLogin.password)
         if (!checkPassword) return res.status(404).send({ status: false, message: "Password not valid" })
@@ -92,10 +92,15 @@ const loginUser = async function (req, res) {
 const getUser = async function (req, res) {
     try {
         const userId = req.params.userId
+        const decodedUserId=req.decodedUserId
+        if(userId!=decodedUserId){ return res.status(403).send({status:false,message:"you are not authorised"})}
         if (!isValidObjectId(userId)) return res.status(400).send({ status: false, message: "invalid user Id" })
+
         const findUserId = await userModel.findById({ _id: userId })
         if (!findUserId) return res.status(404).send({ status: false, message: "user details not found" })
+
         return res.status(200).send({ status: true, message: "User profile details", data: findUserId })
+       
     }
     catch (err) {
         return res.status(500).send({ status: false, error: err.message })
@@ -109,7 +114,9 @@ const updateUserDetails = async function (req, res) {
         const userId = req.params.userId
         const files = req.files
         const updateData = req.body
-
+        const decodedUserId=req.decodedUserId
+        //authorisarion-----------------------
+        if(userId!=decodedUserId){ return res.status(403).send({status:false,message:"you are not authorised"})}
         const { address, fname, lname, email, phone, password } = updateData
 
         if (!isValidObjectId(userId)) return res.status(400).send({ status: false, msg: "invalid user Id" })
