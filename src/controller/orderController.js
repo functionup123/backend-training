@@ -28,7 +28,7 @@ const orderCreation = async function (req, res) {
         const orderCreated = await orderModel.create(cart)
         
        
-        res.status(201).send({ status: true, message: "order created successfully", data: orderCreated })
+        res.status(201).send({ status: true, message: "Success", data: orderCreated })
 
         await cartModel.findOneAndUpdate({ userId: userId }, { $set: { items: [], totalItems: 0, totalPrice: 0 } }, { new: true })
 
@@ -62,12 +62,12 @@ const updateOrder = async function (req, res) {
       const newOrder = await orderModel.findById({ _id: orderId })
       if (!newOrder) return res.status(404).send({ status: false, message: "orderId not found" })
   
-      if (newOrder.userId != userId) return res.status(400).send({ status: false, msg: "userId not found" })
-      if (!status) return res.status(400).send({ status: false, msg: "status is mandatory" })
-      if (!isValidStatus(status)) return res.status(400).send({ status: false, msg: "status should be pending, completed,cancelled" })
+      if (newOrder.userId != userId) return res.status(400).send({ status: false, message: "userId not found" })
+      if (!status) return res.status(400).send({ status: false, message: "status is mandatory" })
+      if (!isValidStatus(status)) return res.status(400).send({ status: false, message: "status should be pending, completed,cancelled" })
   const orderUpdate=await orderModel.findOneAndUpdate({_id:orderId},{status:status},{new:true})
   
-  return res.status(200).send({ status: true,msg:"order updated successfully",data:orderUpdate})
+  return res.status(200).send({ status: true,message:'Success',data:orderUpdate})
   }
   
   catch(err){
